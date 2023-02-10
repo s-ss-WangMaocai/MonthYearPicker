@@ -100,9 +100,9 @@ open class MonthYearPickerView: UIControl {
         return formatter
     }()
     
-    fileprivate enum Component: Int {
-        case month
+    fileprivate enum Component: Int, CaseIterable {
         case year
+        case month
     }
     
     override public init(frame: CGRect) {
@@ -160,11 +160,18 @@ extension MonthYearPickerView: UIPickerViewDelegate {
 extension MonthYearPickerView: UIPickerViewDataSource {
     
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 2
+        /// 修改为通过数据获取
+        return Component.allCases.count
     }
     
     public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        guard let component = Component(rawValue: component) else { return 0 }
+        /// 修改格式为年-月，en状态为月-年
+        var allCases = Component.allCases
+        if locale?.identifier.contains("en") ?? false {
+            allCases = allCases.reversed()
+        }
+        let component = allCases[component]
+        
         switch component {
         case .month:
             return calendar.maximumRange(of: .month)?.count ?? 0
