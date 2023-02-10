@@ -61,9 +61,13 @@ open class MonthYearPickerView: UIControl {
     open var calendar: Calendar = Calendar.autoupdatingCurrent {
         didSet {
             monthDateFormatter.calendar = calendar
-            monthDateFormatter.timeZone = calendar.timeZone
+            /// timeZone用系统的，要不和外面的对不上
+//            monthDateFormatter.timeZone = calendar.timeZone
+            monthDateFormatter.timeZone = .current
             yearDateFormatter.calendar = calendar
-            yearDateFormatter.timeZone = calendar.timeZone
+            /// timeZone用系统的，要不和外面的对不上
+//            yearDateFormatter.timeZone = calendar.timeZone
+            yearDateFormatter.timeZone = .current
         }
     }
 
@@ -113,7 +117,9 @@ open class MonthYearPickerView: UIControl {
     
     private func initialSetup() {
         addSubview(pickerView)
-        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        /// timeZone用系统的，要不和外面的对不上
+//        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        calendar.timeZone = .current
         setDate(date, animated: false)
     }
 
